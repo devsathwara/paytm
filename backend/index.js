@@ -1,16 +1,14 @@
 const express = require("express");
-const {userRoutes} = require('./routes/index');
-const cors = require('cors')
+const { userRoutes, accountRoutes } = require("./routes/index");
+const cors = require("cors");
 const app = express();
-const db=require('./db');
-const config=require('./config/config')
+const db = require("./db");
+const config = require("./config/config");
 
-app.use(express.json())
-app.use('/api/vi/user',userRoutes);
+app.use(express.json());
+app.use("/api/vi/user", userRoutes);
+app.use("/api/vi/account", accountRoutes);
 app.use(cors());
-app.listen(config.env.app.port,()=>{
-    console.log(`Server is running at http://localhost:8080`);
-})
-
-
-
+app.listen(config.env.app.port, () => {
+  console.log(`Server is running at http://localhost:8080`);
+});
