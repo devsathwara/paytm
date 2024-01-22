@@ -42,6 +42,7 @@ router.post("/signup", async (req, res) => {
         });
         await userAcc.save();
         res.status(200).json({
+          success: true,
           message: "User created successfully",
         });
       }
@@ -74,6 +75,7 @@ router.post("/login", async (req, res) => {
       );
       res.setHeader("Authorization", `Bearer ${token}`);
       res.status(200).json({
+        success: true,
         message: "Successfully Login",
         token: token,
       });
@@ -136,4 +138,6 @@ router.get("/bulk", async (req, res) => {
     console.log(error);
   }
 });
+
+router.post("");
 module.exports = router;

@@ -24,9 +24,8 @@ router.get("/balance", authMiddleware, async (req, res) => {
 });
 
 router.post("/transfer", authMiddleware, async (req, res) => {
+  const session = await mongoose.startSession();
   try {
-    const session = await mongoose.startSession();
-
     session.startTransaction();
     const { amount, to } = req.body;
 
@@ -68,6 +67,7 @@ router.post("/transfer", authMiddleware, async (req, res) => {
       message: "Transfer successful",
     });
   } catch (error) {
+    await session.abortTransaction();
     console.error(error);
     return res.status(500).send("Internal Server Error");
   }
