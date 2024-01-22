@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 export function Login() {
+  const { login, isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,10 +19,12 @@ export function Login() {
         "http://localhost:8080/api/vi/user/login",
         formData
       );
+      login();
       console.log(response);
+      console.log("isLoggedIn:", isLoggedIn);
       if (!response.data.success) throw new Error("Server error");
       alert("Login Successfully");
-      navigateTo("/dashboard");
+      navigateTo("/");
     } catch (error) {
       console.log(error);
     }

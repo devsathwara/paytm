@@ -1,32 +1,24 @@
-// import { Fragment } from "react";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-// import { LogoutIcon } from "@heroicons/react/20/solid";
-
-const navigation = [
-  { name: "Dashboard", href: "/", current: true },
-  { name: "Register", href: "/register", current: false },
-  { name: "Login", href: "/login", current: false },
-];
-
-// const user = {
-//   name: "Tom Cook",
-//   email: "tom@example.com",
-//   imageUrl:
-//     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-// };
-
-// const userNavigation = [
-//   { name: "Your Profile", href: "#" },
-//   { name: "Settings", href: "#" },
-//   { name: "Sign out", href: "#" },
-// ];
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
+  const { isLoggedIn, logout } = useAuth();
+  let navigation = [];
+
+  if (isLoggedIn) {
+    navigation = [{ name: "Dashboard", href: "/", current: true }];
+  } else {
+    navigation = [
+      { name: "Login", href: "/login", current: false },
+      { name: "Register", href: "/register", current: false },
+    ];
+  }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -51,9 +43,9 @@ export default function Navbar() {
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className={classNames(
                         item.current
                           ? "bg-gray-900 text-white"
@@ -63,35 +55,37 @@ export default function Navbar() {
                       aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <button
-                    type="button"
-                    className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    onClick={() => {
-                      window.location = "/login";
-                    }}
-                  >
-                    Logout
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
+                  {isLoggedIn ? (
+                    <button
+                      type="button"
+                      className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      onClick={() => {
+                        logout();
+                      }}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
-                      />
-                    </svg>
-                  </button>
+                      Logout
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                        />
+                      </svg>
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </div>
