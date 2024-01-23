@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import Cookies from "js-cookie";
 export function Login() {
-  const { login, isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,12 +18,15 @@ export function Login() {
         "http://localhost:8080/api/vi/user/login",
         formData
       );
-      login();
       console.log(response);
-      console.log("isLoggedIn:", isLoggedIn);
       if (!response.data.success) throw new Error("Server error");
-      alert("Login Successfully");
-      navigateTo("/");
+      else {
+        Cookies.set("userId", response.data.userId, { expires: 1 });
+        Cookies.set("name", response.data.firstName, { expires: 1 });
+        Cookies.set("token", response.data.token, { expires: 1 });
+        alert("Login Successfully");
+        navigateTo("/");
+      }
     } catch (error) {
       console.log(error);
     }
