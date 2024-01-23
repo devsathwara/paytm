@@ -1,23 +1,27 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
 export default function Navbar() {
-  const { isLoggedIn, logout } = useAuth();
+  const userId = Cookies.get("userId");
+  const navigateTo = useNavigate();
   let navigation = [];
-
-  if (isLoggedIn) {
-    navigation = [{ name: "Dashboard", href: "/", current: true }];
-  } else {
+  function logout() {
+    Cookies.remove("userId");
+    Cookies.remove("token");
+    navigateTo("/login");
+  }
+  if (!userId) {
     navigation = [
       { name: "Login", href: "/login", current: false },
       { name: "Register", href: "/register", current: false },
     ];
+  } else {
+    navigation = [{ name: "Dashboard", href: "/", current: true }];
   }
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -61,7 +65,8 @@ export default function Navbar() {
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  {isLoggedIn ? (
+                  (
+                  {userId ? (
                     <button
                       type="button"
                       className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
@@ -86,6 +91,7 @@ export default function Navbar() {
                       </svg>
                     </button>
                   ) : null}
+                  )
                 </div>
               </div>
             </div>
