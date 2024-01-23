@@ -77,6 +77,7 @@ router.post("/login", async (req, res) => {
       res.status(200).json({
         success: true,
         message: "Successfully Login",
+        firstName: userExist.firstName,
         token: token,
         userId: userExist._id,
       });
@@ -113,12 +114,12 @@ router.get("/bulk", async (req, res) => {
       $or: [
         {
           firstName: {
-            $regex: filter,
+            $regex: new RegExp(filter, "i"),
           },
         },
         {
           lastName: {
-            $regex: filter,
+            $regex: new RegExp(filter, "i"),
           },
         },
       ],

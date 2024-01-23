@@ -22,6 +22,7 @@ export function Login() {
       if (!response.data.success) throw new Error("Server error");
       else {
         Cookies.set("userId", response.data.userId, { expires: 1 });
+        Cookies.set("name", response.data.firstName, { expires: 1 });
         Cookies.set("token", response.data.token, { expires: 1 });
         alert("Login Successfully");
         navigateTo("/");

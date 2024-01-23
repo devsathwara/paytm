@@ -8,6 +8,7 @@ function classNames(...classes) {
 }
 export default function Navbar() {
   const userId = Cookies.get("userId");
+  const name = Cookies.get("name");
   const navigateTo = useNavigate();
   let navigation = [];
   function logout() {
@@ -64,6 +65,11 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="flex items-center">
+                <div className="user">
+                  <p className="font-bold text-white pr-[40px] text-[25px]">
+                    Hello {name}
+                  </p>
+                </div>
                 <div className="flex-shrink-0">
                   (
                   {userId ? (
