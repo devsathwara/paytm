@@ -14,6 +14,7 @@ export default function Navbar() {
   function logout() {
     Cookies.remove("userId");
     Cookies.remove("token");
+    Cookies.remove("name");
     navigateTo("/login");
   }
   if (!userId) {
@@ -65,11 +66,15 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="user">
-                  <p className="font-bold text-white pr-[40px] text-[25px]">
-                    Hello {name}
-                  </p>
-                </div>
+                (
+                {userId ? (
+                  <div className="user">
+                    <p className="font-bold text-white pr-[40px] text-[25px]">
+                      Hello {name}
+                    </p>
+                  </div>
+                ) : null}
+                )
                 <div className="flex-shrink-0">
                   (
                   {userId ? (
